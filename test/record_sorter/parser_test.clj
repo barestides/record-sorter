@@ -72,3 +72,33 @@
         (testing "Sort by Last Name Descending")
         (let [[first-name second-name third-name] (map :first-name (records-by-lastname-descending))]
           (is (and (= first-name "Jordan") (= second-name "Elliot") (= third-name "Chris"))))))))
+
+;;; API Tests :::
+
+;;The other API routes are just JSON wrappers around existing functions that have tests,
+;;so this is the only one that needs tests.
+(deftest add-record-test
+  (testing "Testing adding individual records"
+    (let [pipe-record "Jameson | Elliot | Male | Chartreuse | 03/06/2005"
+          comma-record "Smith, Jordan, Female, Blue, 09/21/1988"
+          space-record "Francis, Chris, Male, Yellow, 05/17/1981"
+          expected-db [{:last-name "Jameson",
+                        :first-name "Elliot",
+                        :gender "Male",
+                        :color "Chartreuse",
+                        :birthday "03/06/2005"}
+                       {:last-name "Smith",
+                        :first-name "Jordan",
+                        :gender "Female",
+                        :color "Blue",
+                        :birthday "09/21/1988"}
+                       {:last-name "Francis",
+                        :first-name "Chris",
+                        :gender "Male",
+                        :color "Yellow",
+                        :birthday "05/17/1981"}]]
+      (reset! records-db [])
+      (add-record pipe-record)
+      (add-record comma-record)
+      (add-record space-record)
+      (is (= @records-db expected-db)))))

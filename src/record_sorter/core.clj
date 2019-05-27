@@ -21,7 +21,6 @@
     :validate [filename-exists?]]])
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
   (let [parsed-args (cli/parse-opts args cli-options)
         {:keys [comma-delimited-file pipe-delimited-file space-delimited-file]}

@@ -6,17 +6,33 @@
 
 (defonce records-db (atom []))
 
+(defn parse-record
+  [string-record delimiter-pattern]
+  (faconne/transform (string/split string-record delimiter-pattern)
+                     [lname fname gender color bday]
+                     {:last-name lname
+                      :first-name fname
+                      :gender gender
+                      :color color
+                      :birthday bday}))
+
+(defn add-record
+  [string-record]
+  (let [delimiter-pattern (cond (re-find #"\|" string-record)
+                                #" \| "
+
+                                (re-find #", " string-record)
+                                #", "
+
+                                (re-find #" " string-record)
+                                #" ")
+        parsed-record (parse-record string-record delimiter-pattern)]
+    (swap! records-db conj parsed-record)))
+
 (defn parse-file
   [file delimiter-pattern]
-  (let [string-records (string/split-lines (slurp file))
-        vector-records (map #(string/split % delimiter-pattern) string-records)]
-    (faconne/transform vector-records
-                       [[lname fname gender color bday]]
-                       [{:last-name lname
-                         :first-name fname
-                         :gender gender
-                         :color color
-                         :birthday bday}])))
+  (let [string-records (string/split-lines (slurp file))]
+    (map #(parse-record % delimiter-pattern) string-records)))
 
 (defn records-by-gender
   []
