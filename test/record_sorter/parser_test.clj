@@ -42,7 +42,6 @@
 
 (deftest sorting-test
   (testing "Sorting"
-    ;;do a with-redefs for easier testing? probably
     (let [sample-db (atom '({:last-name "Jameson",
                              :first-name "Elliot",
                              :gender "Male",

@@ -25,7 +25,6 @@
   (let [parsed-args (cli/parse-opts args cli-options)
         {:keys [comma-delimited-file pipe-delimited-file space-delimited-file]}
         (:options parsed-args)]
-    ;; (pprint/pprint parsed-args)
     (parser/parse-record-files-and-add-to-db!
      pipe-delimited-file comma-delimited-file space-delimited-file)
     (println "Records Sorted by Gender:")

@@ -7,6 +7,7 @@
 (defonce records-db (atom []))
 
 (defn parse-record
+  "Given a record of 5 attributes as a string, return the record as a map with attribute names assumed."
   [string-record delimiter-pattern]
   (faconne/transform (string/split string-record delimiter-pattern)
                      [lname fname gender color bday]
